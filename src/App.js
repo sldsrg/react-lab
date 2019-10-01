@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss'
 
 import Menu from './components/Menu'
 import Home from './components/Home'
+import ResizeObserverLab from './components/ResizeObserverLab'
 import LocalStorageLab from './components/LocalStorageLab'
 
 const useStyles = createUseStyles({
@@ -14,9 +15,12 @@ const useStyles = createUseStyles({
     justifyContent: 'stretch',
     alignItems: 'stretch'
   },
+  sidebar: {
+    flex: '0 0 auto'
+  },
   content: {
     margin: 16,
-    flex: 1
+    flex: '1 1 auto'
   }
 })
 
@@ -25,9 +29,14 @@ function App() {
   return (
     <Router>
       <div className={classes.main}>
-        <Menu />
+        <nav className={classes.sidebar}>
+          <Menu />
+        </nav>
         <div className={classes.content}>
           <Switch>
+            <Route path='/resizeObserverLab'>
+              <ResizeObserverLab />
+            </Route>
             <Route path='/localStorageLab'>
               <LocalStorageLab />
             </Route>

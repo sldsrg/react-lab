@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { createUseStyles } from 'react-jss'
 
@@ -30,16 +30,19 @@ function Menu() {
   const classes = useStyles()
 
   return (
-    <nav>
-      <ul className={classes.list}>
-        <li>
-          <Link to='/'>Home</Link>
-        </li>
-        <li>
-          <Link to='/localStorageLab'>Local Storage Lab</Link>
-        </li>
-      </ul>
-    </nav>
+    <ul className={classes.list}>
+      <li>
+        <NavLink to='/' exact>
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to='/resizeObserverLab'>Resize Observer Lab</NavLink>
+      </li>
+      <li>
+        <NavLink to='/localStorageLab'>Local Storage Lab</NavLink>
+      </li>
+    </ul>
   )
 }
 
