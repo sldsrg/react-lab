@@ -18,7 +18,15 @@ const useStyles = createUseStyles({
     '& a': {
       textDecoration: 'none',
       fontWeight: 'bold',
-      color: 'gold'
+      color: 'gold',
+      '&.active': {
+        color: 'white',
+        '&::before': {
+          content: '">"',
+          position: 'absolute',
+          marginLeft: '-1em'
+        }
+      }
     }
   },
   myLabel: {
