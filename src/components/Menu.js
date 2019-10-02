@@ -37,6 +37,9 @@ function Menu() {
         </NavLink>
       </li>
       <li>
+        <NavLink to='/printingLab'>Printing Lab</NavLink>
+      </li>
+      <li>
         <NavLink to='/resizeObserverLab'>Resize Observer Lab</NavLink>
       </li>
       <li>

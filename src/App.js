@@ -6,6 +6,7 @@ import Menu from './components/Menu'
 import Home from './components/Home'
 import ResizeObserverLab from './components/ResizeObserverLab'
 import LocalStorageLab from './components/LocalStorageLab'
+import PrintingLab from './components/PrintingLab'
 
 const useStyles = createUseStyles({
   main: {
@@ -34,6 +35,9 @@ function App() {
         </nav>
         <div className={classes.content}>
           <Switch>
+            <Route path='/printingLab'>
+              <PrintingLab />
+            </Route>
             <Route path='/resizeObserverLab'>
               <ResizeObserverLab />
             </Route>
