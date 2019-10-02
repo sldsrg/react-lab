@@ -7,6 +7,7 @@ import Home from './components/Home'
 import ResizeObserverLab from './components/ResizeObserverLab'
 import LocalStorageLab from './components/LocalStorageLab'
 import PrintingLab from './components/PrintingLab'
+import MediaQueryLab from './components/MediaQueryLab'
 
 const useStyles = createUseStyles({
   main: {
@@ -35,6 +36,9 @@ function App() {
         </nav>
         <div className={classes.content}>
           <Switch>
+            <Route path='/mediaQueryLab'>
+              <MediaQueryLab />
+            </Route>
             <Route path='/printingLab'>
               <PrintingLab />
             </Route>

@@ -1,9 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { createUseStyles } from 'react-jss'
-
-const useStyles = createUseStyles({
-  list: {}
-})
+import React, { useEffect, useState, useRef } from 'react'
 
 function ResizeObserverLab() {
   const [h1FontSize, setH1FontSize] = useState(2)
