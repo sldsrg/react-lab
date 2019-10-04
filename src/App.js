@@ -7,6 +7,7 @@ import Home from './components/Home'
 import ResizeObserverLab from './components/ResizeObserverLab'
 import LocalStorageLab from './components/LocalStorageLab'
 import PrintingLab from './components/PrintingLab'
+import FramePrintingLab from './components/FramePrintingLab'
 import MediaQueryLab from './components/MediaQueryLab'
 
 const useStyles = createUseStyles({
@@ -23,8 +24,22 @@ const useStyles = createUseStyles({
   content: {
     margin: 16,
     flex: '1 1 auto'
+  },
+  '@media print': {
+    sidebar: {
+      display: 'none'
+    }
   }
 })
+
+const entries = [
+  { path: '/', component: <Home />, name: 'Home' },
+  { path: '/mediaQueryLab', component: <MediaQueryLab />, name: 'Media Query Lab' },
+  { path: '/framePrintingLab', component: <FramePrintingLab />, name: 'Frame Printing Lab' },
+  { path: '/printingLab', component: <PrintingLab />, name: 'Printing Lab' },
+  { path: '/resizeObserverLab', component: <ResizeObserverLab />, name: 'Resize Observer Lab' },
+  { path: '/localStorageLab', component: <LocalStorageLab />, name: 'Local Storage Lab' }
+]
 
 function App() {
   const classes = useStyles()
@@ -32,25 +47,15 @@ function App() {
     <Router>
       <div className={classes.main}>
         <nav className={classes.sidebar}>
-          <Menu />
+          <Menu entries={entries} />
         </nav>
         <div className={classes.content}>
           <Switch>
-            <Route path='/mediaQueryLab'>
-              <MediaQueryLab />
-            </Route>
-            <Route path='/printingLab'>
-              <PrintingLab />
-            </Route>
-            <Route path='/resizeObserverLab'>
-              <ResizeObserverLab />
-            </Route>
-            <Route path='/localStorageLab'>
-              <LocalStorageLab />
-            </Route>
-            <Route path='/'>
-              <Home />
-            </Route>
+            {entries.map(({ path, component }, index) => (
+              <Route key={index} path={path} exact>
+                {component}
+              </Route>
+            ))}
           </Switch>
         </div>
       </div>

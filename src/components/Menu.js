@@ -34,28 +34,19 @@ const useStyles = createUseStyles({
   }
 })
 
-function Menu() {
+function Menu(props) {
+  const { entries } = props
   const classes = useStyles()
 
   return (
     <ul className={classes.list}>
-      <li>
-        <NavLink to='/' exact>
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to='/mediaQueryLab'>Media Query Lab</NavLink>
-      </li>
-      <li>
-        <NavLink to='/printingLab'>Printing Lab</NavLink>
-      </li>
-      <li>
-        <NavLink to='/resizeObserverLab'>Resize Observer Lab</NavLink>
-      </li>
-      <li>
-        <NavLink to='/localStorageLab'>Local Storage Lab</NavLink>
-      </li>
+      {entries.map(({ path, name }, index) => (
+        <li key={index}>
+          <NavLink to={path} exact>
+            {name}
+          </NavLink>
+        </li>
+      ))}
     </ul>
   )
 }

@@ -9,6 +9,8 @@ function ResizeObserverLab() {
   const [checked, setChecked] = useState(true)
 
   useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return
+
     observer.current = new ResizeObserver(entries => {
       for (let entry of entries) {
         if (entry.contentBoxSize) {
@@ -24,6 +26,7 @@ function ResizeObserverLab() {
   }, [])
 
   useEffect(() => {
+    if (!observer.current) return
     if (checked) {
       observer.current.observe(divRef.current)
     } else {
@@ -35,7 +38,9 @@ function ResizeObserverLab() {
 
   const handleSlider = ev => setWidth(ev.target.valueAsNumber)
 
-  if (ResizeObserver) {
+  if (typeof ResizeObserver === 'undefined') {
+    return <div>Resize observer not supported</div>
+  } else {
     return (
       <div ref={divRef} style={{ width }}>
         <form>
@@ -72,8 +77,6 @@ function ResizeObserverLab() {
         </p>
       </div>
     )
-  } else {
-    return <div>Resize observer not supported</div>
   }
 }
 

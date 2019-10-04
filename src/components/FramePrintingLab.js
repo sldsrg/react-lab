@@ -1,16 +1,16 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import { createUseStyles } from 'react-jss'
-import ReactToPrint from 'react-to-print'
 
 const useStyles = createUseStyles({
   table: {
     margin: 24,
     '& th': {
-      fontSize: '1.5rem',
+      fontSize: '1.4rem',
       fontWeight: 'bold'
     },
     '& td': {
-      fontSize: '1.5rem'
+      fontSize: '1.4rem'
     }
   },
   headerName: {
@@ -27,11 +27,8 @@ const useStyles = createUseStyles({
     textAlign: 'end',
     paddingRight: '1rem'
   },
-  printButton: {},
-  '@media print': {
-    printButton: {
-      display: 'none'
-    }
+  div: {
+    backgroundColor: 'lightyellow'
   }
 })
 
@@ -63,12 +60,6 @@ function DataTable(props) {
   )
 }
 
-class ComponentToPrint extends React.Component {
-  render() {
-    return <DataTable {...this.props} />
-  }
-}
-
 function generateData(count) {
   return new Array(count).fill(null).map((item, index) => ({
     name: `Sample item ${index + 1}`,
@@ -77,21 +68,43 @@ function generateData(count) {
   }))
 }
 
-function PrintingLab() {
-  const componentRef = useRef()
+// The A4 page size is defined as 210mm x 297mm, which is 8.268" x 11.69".
+// Since CSS pixels are 96px/inch (as long as we're talking about
+// a high-resolution device like a printer -- CSS pixels equal device pixels
+// for low-res applications), I think you should be able to rely on the page
+// size being 793.7px x 1123px
+
+function FramePrintingLab() {
   const data = useRef(generateData(32))
   const classes = useStyles()
+  const frameRef = useRef(null)
+
+  function print() {
+    frameRef.current.contentWindow.print()
+  }
+
+  useEffect(() => {
+    const frameDoc = frameRef.current.contentDocument
+    const root = frameDoc.createElement('div')
+    frameDoc.body.appendChild(root)
+    ReactDOM.render(<DataTable data={data.current} />, root, () =>
+      console.log(root.getBoundingClientRect().height)
+    )
+  }, [])
 
   return (
-    <div>
-      <ReactToPrint
-        // pageStyle='@page { size: A5 landscape;  margin: 9mm; }'
-        trigger={() => <button className={classes.printButton}>Print this out!</button>}
-        content={() => componentRef.current}
-      />
-      <ComponentToPrint data={data.current} ref={componentRef} />
-    </div>
+    <>
+      <div>
+        <input type='button' value='print' onClick={print} />
+      </div>
+      <div>
+        <iframe title='printing' ref={frameRef} />
+      </div>
+      <div className={classes.div}>
+        <DataTable data={data.current} />
+      </div>
+    </>
   )
 }
 
-export default PrintingLab
+export default FramePrintingLab
