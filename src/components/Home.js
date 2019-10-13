@@ -34,6 +34,9 @@ function Home() {
   return (
     <div>
       <Button>Submit</Button>
+      <div>
+        <img src={'images/spatz.jpg'} alt='sparrow'></img>
+      </div>
     </div>
   )
 }

@@ -1,64 +1,14 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { createUseStyles } from 'react-jss'
 
+import Printable from './Printable'
+
 const useStyles = createUseStyles({
-  table: {
-    margin: 24,
-    '& th': {
-      fontSize: '1.4rem',
-      fontWeight: 'bold'
-    },
-    '& td': {
-      fontSize: '1.4rem'
-    }
-  },
-  headerName: {
-    minWidth: 300,
-    textAlign: 'center'
-  },
-  columnName: {
-    fontStyle: 'italic'
-  },
-  columnPrice: {
-    textAlign: 'end'
-  },
-  columnCount: {
-    textAlign: 'end',
-    paddingRight: '1rem'
-  },
   div: {
     backgroundColor: 'lightyellow'
   }
 })
-
-function DataTable(props) {
-  const { data } = props
-  const classes = useStyles()
-
-  return (
-    <table className={classes.table}>
-      <thead>
-        <tr>
-          <th className={classes.headerName}>Name</th>
-          <th className={classes.headerPrice}>Price</th>
-          <th className={classes.headerCount}>Count</th>
-          <th className={classes.headerPrice}>Sum</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
-            <td className={classes.columnName}>{row.name}</td>
-            <td className={classes.columnPrice}>{row.price.toFixed(2)}</td>
-            <td className={classes.columnCount}>{row.count}</td>
-            <td className={classes.columnPrice}>{(row.price * row.count).toFixed(2)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-}
 
 function generateData(count) {
   return new Array(count).fill(null).map((item, index) => ({
@@ -75,7 +25,8 @@ function generateData(count) {
 // size being 793.7px x 1123px
 
 function FramePrintingLab() {
-  const data = useRef(generateData(32))
+  const data = useRef(generateData(64))
+  const [step, setStep] = useState(0)
   const classes = useStyles()
   const frameRef = useRef(null)
 
@@ -86,11 +37,15 @@ function FramePrintingLab() {
   useEffect(() => {
     const frameDoc = frameRef.current.contentDocument
     const root = frameDoc.createElement('div')
-    frameDoc.body.appendChild(root)
-    ReactDOM.render(<DataTable data={data.current} />, root, () =>
-      console.log(root.getBoundingClientRect().height)
-    )
-  }, [])
+    const prev = frameDoc.body.firstChild
+    if (prev) frameDoc.body.replaceChild(root, prev)
+    else frameDoc.body.appendChild(root)
+    ReactDOM.render(<Printable data={data.current} toStep={step} />, root, () => {
+      const curHeight = root.getBoundingClientRect().height
+      console.log(curHeight)
+      if (curHeight < 300) setStep(prev => prev + 1)
+    })
+  }, [step])
 
   return (
     <>
@@ -101,7 +56,7 @@ function FramePrintingLab() {
         <iframe title='printing' ref={frameRef} />
       </div>
       <div className={classes.div}>
-        <DataTable data={data.current} />
+        <Printable data={data.current} />
       </div>
     </>
   )
