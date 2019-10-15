@@ -1,5 +1,4 @@
 {
   "eslint.packageManager": "yarn",
-  "npm.bin": "yarn",
   "npm.packageManager": "yarn"
 }
