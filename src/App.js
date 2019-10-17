@@ -4,11 +4,11 @@ import { createUseStyles } from 'react-jss'
 
 import Menu from './components/Menu'
 import Home from './components/Home'
-import ResizeObserverLab from './components/ResizeObserverLab'
-import LocalStorageLab from './components/LocalStorageLab'
-import PrintingLab from './components/PrintingLab'
-import FramePrintingLab from './components/FramePrintingLab'
-import MediaQueryLab from './components/MediaQueryLab'
+import ResizeObserverLab from './labs/ResizeObserverLab'
+import LocalStorageLab from './labs/LocalStorageLab'
+import PrintingLab from './labs/PrintingLab'
+import FramePrintingLab from './labs/FramePrintingLab'
+import MediaQueryLab from './labs/MediaQueryLab'
 
 const useStyles = createUseStyles({
   main: {

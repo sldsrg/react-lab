@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { createUseStyles } from 'react-jss'
 
-import Printable from './Printable'
+import Printable from '../components/Printable'
+import FrameWithJss from '../components/FrameWithJss'
 
 const useStyles = createUseStyles({
   div: {
@@ -28,23 +29,29 @@ function FramePrintingLab() {
   const data = useRef(generateData(64))
   const [step, setStep] = useState(0)
   const classes = useStyles()
-  const frameRef = useRef(null)
+  const targetRef = useRef()
+  const frameRef = useRef()
+  const contentRef = useRef()
 
   function print() {
-    frameRef.current.contentWindow.print()
+    frameRef.current.node.contentWindow.print()
   }
 
   useEffect(() => {
-    const frameDoc = frameRef.current.contentDocument
-    const root = frameDoc.createElement('div')
-    const prev = frameDoc.body.firstChild
-    if (prev) frameDoc.body.replaceChild(root, prev)
-    else frameDoc.body.appendChild(root)
-    ReactDOM.render(<Printable data={data.current} toStep={step} />, root, () => {
-      const curHeight = root.getBoundingClientRect().height
-      console.log(curHeight)
-      if (curHeight < 300) setStep(prev => prev + 1)
-    })
+    ReactDOM.render(
+      <FrameWithJss ref={frameRef}>
+        <Printable ref={contentRef} data={data.current} toStep={step} />
+      </FrameWithJss>,
+      targetRef.current,
+      () => {
+        let curHeight = 0
+        if (contentRef.current) {
+          curHeight = contentRef.current.getBoundingClientRect().height
+        }
+        // const curHeight = frameRef.current.node.getBoundingClientRect().height
+        if (curHeight < 300 && step < 40) setStep(prev => prev + 1)
+      }
+    )
   }, [step])
 
   return (
@@ -52,9 +59,7 @@ function FramePrintingLab() {
       <div>
         <input type='button' value='print' onClick={print} />
       </div>
-      <div>
-        <iframe title='printing' ref={frameRef} />
-      </div>
+      <div ref={targetRef}></div>
       <div className={classes.div}>
         <Printable data={data.current} />
       </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { createUseStyles } from 'react-jss'
 
@@ -32,13 +32,13 @@ const useStyles = createUseStyles({
   }
 })
 
-function Printable(props) {
+const Printable = forwardRef((props, ref) => {
   const { data, fromStep, toStep, pageNo, pagesTotal } = props
   const classes = useStyles()
   let pageTop = pageNo ? `Page ${pageNo} of ${pagesTotal}` : null
 
   return (
-    <>
+    <div ref={ref}>
       {pageTop ? <div data-testid='page-top'>{pageTop}</div> : null}
       <table>
         <thead>
@@ -60,9 +60,9 @@ function Printable(props) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
-}
+})
 
 Printable.propTypes = {
   data: PropTypes.array.isRequired,
