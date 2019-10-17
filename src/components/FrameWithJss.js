@@ -6,22 +6,27 @@ import Frame, { FrameContextConsumer } from 'react-frame-component'
 
 const FrameWithJss = forwardRef((props, ref) => {
   const { children } = props
-  const initialContent = `<!DOCTYPE html>
+  const content = `<!DOCTYPE html>
   <html>
     <head>
-      <style></style>
+      <style>
+        @media print {
+          h4 {
+            break-before: page;
+          }
+        }
+      </style>
     </head>
     <body>
-      <div id="mountHere">
-      </div>
+      <div id="root" />
     </body>
   </html>`
   return (
     <Frame
       ref={ref}
       style={{ width: '49%', height: '100%' }}
-      initialContent={initialContent}
-      mountTarget='#mountHere'
+      initialContent={content}
+      mountTarget='#root'
     >
       <FrameContextConsumer>
         {({ document }) => {

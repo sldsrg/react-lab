@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { createUseStyles } from 'react-jss'
 
 import Printable from '../components/Printable'
@@ -28,19 +28,42 @@ function generateData(count) {
 function FramePrintingLab() {
   const data = useRef(generateData(64))
   const [step, setStep] = useState(0)
+  const [offset, setOffset] = useState(0)
+  const pages = useRef([])
   const classes = useStyles()
   const targetRef = useRef()
   const frameRef = useRef()
   const contentRef = useRef()
 
   function print() {
-    frameRef.current.node.contentWindow.print()
+    render(
+      <FrameWithJss ref={frameRef}>
+        <div className='page'>
+          {pages.current.map(([offset, step], index) => {
+            return (
+              <Printable
+                key={offset}
+                data={data.current}
+                pageNo={index + 1}
+                pagesTotal={pages.current.length}
+                fromStep={offset}
+                toStep={step}
+              />
+            )
+          })}
+        </div>
+      </FrameWithJss>,
+      targetRef.current,
+      frameRef.current.node.contentWindow.print
+    )
   }
 
   useEffect(() => {
-    ReactDOM.render(
+    // TODO: render all pages together (i.e. calculate and print in one step)
+    // TODO: render fragment outside of screen
+    render(
       <FrameWithJss ref={frameRef}>
-        <Printable ref={contentRef} data={data.current} toStep={step} />
+        <Printable ref={contentRef} data={data.current} fromStep={offset} toStep={step} />
       </FrameWithJss>,
       targetRef.current,
       () => {
@@ -48,11 +71,19 @@ function FramePrintingLab() {
         if (contentRef.current) {
           curHeight = contentRef.current.getBoundingClientRect().height
         }
-        // const curHeight = frameRef.current.node.getBoundingClientRect().height
-        if (curHeight < 300 && step < 40) setStep(prev => prev + 1)
+        if (step > data.current.length) {
+          pages.current.push([offset, step])
+          return
+        } else if (curHeight < 400) {
+          // TODO: compare to real height
+          setStep(prev => prev + 1)
+        } else {
+          pages.current.push([offset, step])
+          setOffset(step)
+        }
       }
     )
-  }, [step])
+  }, [step, offset])
 
   return (
     <>

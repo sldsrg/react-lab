@@ -36,10 +36,9 @@ const Printable = forwardRef((props, ref) => {
   const { data, fromStep, toStep, pageNo, pagesTotal } = props
   const classes = useStyles()
   let pageTop = pageNo ? `Page ${pageNo} of ${pagesTotal}` : null
-
   return (
     <div ref={ref}>
-      {pageTop ? <div data-testid='page-top'>{pageTop}</div> : null}
+      {pageTop ? <h4 data-testid='page-top'>{pageTop}</h4> : null}
       <table>
         <thead>
           <tr>
