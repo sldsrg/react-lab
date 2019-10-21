@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss'
 
 import Menu from './components/Menu'
 import Home from './components/Home'
+import GridLab from './labs/GridLab'
 import ResizeObserverLab from './labs/ResizeObserverLab'
 import LocalStorageLab from './labs/LocalStorageLab'
 import PrintingLab from './labs/PrintingLab'
@@ -34,6 +35,7 @@ const useStyles = createUseStyles({
 
 const entries = [
   { path: '/', component: <Home />, name: 'Home' },
+  { path: '/GridLab', component: <GridLab />, name: 'Grid Lab' },
   { path: '/mediaQueryLab', component: <MediaQueryLab />, name: 'Media Query Lab' },
   { path: '/framePrintingLab', component: <FramePrintingLab />, name: 'Frame Printing Lab' },
   { path: '/printingLab', component: <PrintingLab />, name: 'Printing Lab' },
