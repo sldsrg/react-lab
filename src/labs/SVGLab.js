@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { Spring } from 'react-spring/renderprops'
+import { useSpring, animated } from 'react-spring'
 
 const useStyles = createUseStyles({
   container: {
@@ -14,15 +14,21 @@ const useStyles = createUseStyles({
   }
 })
 
+function Piece(props) {
+  return <use href='#blackMan' {...props}></use>
+}
+
 function SVGLab() {
   const [pos, setPos] = useState({ x: 120, y: 200 })
   const classes = useStyles()
+  const props = useSpring({ to: pos })
+  const AnimatedPiece = animated(Piece)
 
   return (
     <svg
       viewBox='-10 -10 650 650'
       className={classes.container}
-      onClick={() => setPos(prev => ({ x: prev.x + 80, y: prev.y + 80 }))}
+      onClick={() => setPos((prev) => ({ x: prev.x + 80, y: prev.y + 80 }))}
     >
       <defs>
         <path
@@ -35,7 +41,7 @@ function SVGLab() {
       </defs>
       <circle cx={40} cy={120} r={36} className={classes.piece}></circle>
       <circle cx={120} cy={40} r={36} className={classes.piece}></circle>
-      <Spring to={pos}>{props => <use href='#blackMan' {...props}></use>}</Spring>
+      <AnimatedPiece href='#blackMan' {...props}></AnimatedPiece>
       <circle cx={200} cy={120} r={36} className={classes.piece}></circle>
     </svg>
   )
