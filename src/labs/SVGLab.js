@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useSpring, animated } from 'react-spring'
+import { useSpring, animated } from '@react-spring/web'
 
 const useStyles = createUseStyles({
   container: {
@@ -21,7 +21,7 @@ function Piece(props) {
 function SVGLab() {
   const [pos, setPos] = useState({ x: 120, y: 200 })
   const classes = useStyles()
-  const props = useSpring({ to: pos })
+  const props = useSpring({ ...pos, from: pos, to: pos })
 
   const AnimatedPiece = animated(Piece)
 
