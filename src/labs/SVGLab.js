@@ -15,20 +15,22 @@ const useStyles = createUseStyles({
 })
 
 function Piece(props) {
-  return <use href='#blackMan' {...props}></use>
+  return <use href='#blackMan' data-testid='blackMan' {...props}></use>
 }
 
 function SVGLab() {
   const [pos, setPos] = useState({ x: 120, y: 200 })
   const classes = useStyles()
   const props = useSpring({ to: pos })
+
   const AnimatedPiece = animated(Piece)
 
   return (
     <svg
+      data-testid='container'
       viewBox='-10 -10 650 650'
       className={classes.container}
-      onClick={() => setPos((prev) => ({ x: prev.x + 80, y: prev.y + 80 }))}
+      onClick={() => setPos(prev => ({ x: prev.x + 80, y: prev.y + 80 }))}
     >
       <defs>
         <path
@@ -42,7 +44,13 @@ function SVGLab() {
       <circle cx={40} cy={120} r={36} className={classes.piece}></circle>
       <circle cx={120} cy={40} r={36} className={classes.piece}></circle>
       <AnimatedPiece href='#blackMan' {...props}></AnimatedPiece>
-      <circle cx={200} cy={120} r={36} className={classes.piece}></circle>
+      <circle
+        data-testid='discrete'
+        cx={pos.x + 80}
+        cy={pos.y - 80}
+        r={36}
+        className={classes.piece}
+      ></circle>
     </svg>
   )
 }
