@@ -11,6 +11,7 @@ import LocalStorageLab from './labs/LocalStorageLab'
 import PrintingLab from './labs/PrintingLab'
 import FramePrintingLab from './labs/FramePrintingLab'
 import MediaQueryLab from './labs/MediaQueryLab'
+import TransitionGroupLab from './labs/TransitionGroupLab'
 
 const useStyles = createUseStyles({
   main: {
@@ -36,6 +37,7 @@ const useStyles = createUseStyles({
 
 const entries = [
   { path: '/', component: <Home />, name: 'Home' },
+  { path: '/TransitionGroupLab', component: <TransitionGroupLab />, name: 'Transition Group Lab' },
   { path: '/SVGLab', component: <SVGLab />, name: 'SVG Lab' },
   { path: '/GridLab', component: <GridLab />, name: 'Grid Lab' },
   { path: '/mediaQueryLab', component: <MediaQueryLab />, name: 'Media Query Lab' },
